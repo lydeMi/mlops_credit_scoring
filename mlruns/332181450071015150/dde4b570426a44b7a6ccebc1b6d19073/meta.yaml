@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/lydem/Downloads/mlops_credit_scoring/mlruns/332181450071015150/dde4b570426a44b7a6ccebc1b6d19073/artifacts
+end_time: 1751405471933
+entry_point_name: ''
+experiment_id: '332181450071015150'
+lifecycle_stage: active
+run_id: dde4b570426a44b7a6ccebc1b6d19073
+run_name: GradientBoosting
+run_uuid: dde4b570426a44b7a6ccebc1b6d19073
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751405466621
+status: 3
+tags: []
+user_id: lydem

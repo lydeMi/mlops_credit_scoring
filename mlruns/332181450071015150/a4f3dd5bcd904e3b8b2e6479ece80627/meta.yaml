@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/lydem/Downloads/mlops_credit_scoring/mlruns/332181450071015150/a4f3dd5bcd904e3b8b2e6479ece80627/artifacts
+end_time: 1751404804284
+entry_point_name: ''
+experiment_id: '332181450071015150'
+lifecycle_stage: active
+run_id: a4f3dd5bcd904e3b8b2e6479ece80627
+run_name: random_forest_run
+run_uuid: a4f3dd5bcd904e3b8b2e6479ece80627
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751404801124
+status: 3
+tags: []
+user_id: lydem

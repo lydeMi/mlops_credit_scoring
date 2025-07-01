@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/lydem/Downloads/mlops_credit_scoring/mlruns/332181450071015150/ad8bf77b2c2b48b3b5c02485d971b042/artifacts
+end_time: 1751405154116
+entry_point_name: ''
+experiment_id: '332181450071015150'
+lifecycle_stage: active
+run_id: ad8bf77b2c2b48b3b5c02485d971b042
+run_name: logistic_regression
+run_uuid: ad8bf77b2c2b48b3b5c02485d971b042
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751405151838
+status: 3
+tags: []
+user_id: lydem
