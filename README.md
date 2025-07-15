@@ -1,22 +1,22 @@
-# 💳 MLOps Credit Scoring App
+# MLOps Credit Scoring App
 
 Une application complète de **scoring crédit** utilisant Python, MLflow, Streamlit, et Scikit-learn.  
 Elle permet de prédire si un client remboursera ou non un crédit, à partir de données personnelles et financières.
 
 ---
 
-## 📌 Objectifs
+## Objectifs
 
-- 📊 Analyser des données de crédit
-- 🤖 Entraîner plusieurs modèles de machine learning
-- 🏆 Suivre les performances avec **MLflow**
-- 🌐 Déployer une interface interactive via **Streamlit**
-- 🧠 Automatiser la sélection du meilleur modèle
-- 📝 Permettre la saisie manuelle et l’historique des prédictions
+- Analyser des données de crédit
+- Entraîner plusieurs modèles de machine learning
+- Suivre les performances avec **MLflow**
+- Déployer une interface interactive via **Streamlit**
+- Automatiser la sélection du meilleur modèle
+- Permettre la saisie manuelle et l’historique des prédictions
 
 ---
 
-## 🗂 Structure du projet
+## Structure du projet
 
 ```bash
 mlops_credit_scoring/
