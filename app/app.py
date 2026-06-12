@@ -1,9 +1,3 @@
-# === Astuce de compatibilité pour scikit-learn v1.5+ ===
-import sys
-from sklearn.ensemble import _gb
-sys.modules["sklearn.ensemble._gb_losses"] = _gb
-# ------------------------------------------------------
-
 import streamlit as st
 import numpy as np
 import pandas as pd
