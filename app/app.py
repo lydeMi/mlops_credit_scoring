@@ -1,8 +1,17 @@
+# --- Astuce de compatibilité pour scikit-learn v1.5+ ---
+import sys
+from sklearn.ensemble import _gb
+
+# On recrée virtuellement le module supprimé pour tromper cloudpickle
+sys.modules["sklearn.ensemble._gb_losses"] = _gb
+# ------------------------------------------------------
+
 import streamlit as st
 import numpy as np
 import pandas as pd
 import joblib
 import mlflow.sklearn
+# ... (le reste de votre code ne change pas)
 import mlflow
 from mlflow.tracking import MlflowClient
 import os
