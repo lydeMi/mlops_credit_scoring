@@ -27,6 +27,12 @@ def load_resources():
 
 scaler, model = load_resources()
 
+st.info(f"Nombre de variables attendu par le scaler : {scaler.n_features_in_}")
+
+if hasattr(scaler, "feature_names_in_"):
+    st.write("Colonnes attendues par le scaler :")
+    st.write(list(scaler.feature_names_in_))
+
 
 @st.cache_data
 def get_best_run_id():
@@ -137,6 +143,8 @@ if submitted:
         BILL_AMT1, BILL_AMT2, BILL_AMT3, BILL_AMT4, BILL_AMT5, BILL_AMT6,
         PAY_AMT1, PAY_AMT2, PAY_AMT3, PAY_AMT4, PAY_AMT5, PAY_AMT6
     ]])
+
+    st.write("Nombre de variables envoyées au scaler :", input_data.shape[1])
 
     input_scaled = scaler.transform(input_data)
     prediction = model.predict(input_scaled)[0]
