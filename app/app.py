@@ -27,12 +27,6 @@ def load_resources():
 
 scaler, model = load_resources()
 
-st.info(f"Nombre de variables attendu par le scaler : {scaler.n_features_in_}")
-
-if hasattr(scaler, "feature_names_in_"):
-    st.write("Colonnes attendues par le scaler :")
-    st.write(list(scaler.feature_names_in_))
-
 
 @st.cache_data
 def get_best_run_id():
@@ -71,7 +65,7 @@ with st.expander("Description des variables utilisées", expanded=False):
     - **MARRIAGE** : Statut marital (`1 = célibataire`, `2 = marié`, `3 = autre`)
     - **AGE** : Âge du client
     - **PAY_0 à PAY_6** : Statut des 6 derniers paiements
-    - **BILL_AMT1 à BILL_AMT6** : Montants des relevés mensuels
+    - **BILL_AMT6** : Montant du relevé bancaire du mois -6 utilisé par le modèle
     - **PAY_AMT1 à PAY_AMT6** : Paiements effectués sur les 6 derniers mois
     """)
 
@@ -109,15 +103,8 @@ with st.form("credit_form"):
     PAY_5 = c_pay5.selectbox("Mois -5", list(range(-1, 9)), key="p5")
     PAY_6 = c_pay6.selectbox("Mois -6", list(range(-1, 9)), key="p6")
 
-    st.markdown("#### Montant des relevés bancaires")
-    cb1, cb2, cb3, cb4, cb5, cb6 = st.columns(6)
-
-    BILL_AMT1 = cb1.number_input("BILL mois -1", min_value=0, step=100, key="b1")
-    BILL_AMT2 = cb2.number_input("BILL mois -2", min_value=0, step=100, key="b2")
-    BILL_AMT3 = cb3.number_input("BILL mois -3", min_value=0, step=100, key="b3")
-    BILL_AMT4 = cb4.number_input("BILL mois -4", min_value=0, step=100, key="b4")
-    BILL_AMT5 = cb5.number_input("BILL mois -5", min_value=0, step=100, key="b5")
-    BILL_AMT6 = cb6.number_input("BILL mois -6", min_value=0, step=100, key="b6")
+    st.markdown("#### Montant du relevé bancaire utilisé par le modèle")
+    BILL_AMT6 = st.number_input("BILL mois -6", min_value=0, step=100, key="b6")
 
     st.markdown("#### Paiements mensuels effectués")
     cp1, cp2, cp3, cp4, cp5, cp6 = st.columns(6)
@@ -158,8 +145,6 @@ if submitted:
         PAY_AMT6
     ]])
 
-    st.write("Nombre de variables envoyées au scaler :", input_data.shape[1])
-
     input_scaled = scaler.transform(input_data)
     prediction = model.predict(input_scaled)[0]
     proba = model.predict_proba(input_scaled)[0][1]
@@ -191,6 +176,7 @@ if submitted:
         "EDUCATION": {1: "Université", 2: "Secondaire", 3: "Autre"}[EDUCATION],
         "MARRIAGE": {1: "Célibataire", 2: "Marié", 3: "Autre"}[MARRIAGE],
         "AGE": AGE,
+        "BILL_AMT6": BILL_AMT6,
         "PREDICTION": result_text,
         "PROBA_DEFAUT": f"{proba * 100:.1f}%"
     })
