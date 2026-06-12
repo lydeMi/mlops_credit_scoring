@@ -8,11 +8,16 @@ from mlflow.tracking import MlflowClient
 import os
 import plotly.graph_objects as go
 
+# === Configuration de la page (Doit être placé tout en haut) ===
+st.set_page_config(page_title="Credit Scoring App", page_icon="💳", layout="centered")
+
 # === Chargement du scaler ===
 scaler = joblib.load(os.path.join("data", "scaler.pkl"))
 
-# === Récupération dynamique du meilleur modèle ===
+# === Configuration locale de MLflow ===
+os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
 mlflow.set_tracking_uri("file:./mlruns")
+
 client = MlflowClient()
 experiment = client.get_experiment_by_name("credit_scoring")
 
@@ -26,11 +31,12 @@ runs = client.search_runs(
 
 best_run = runs[0]
 best_run_id = best_run.info.run_id
-model = mlflow.sklearn.load_model(f"runs:/{best_run_id}/model")
 
-# === Configuration de la page ===
-st.set_page_config(page_title="Credit Scoring App", page_icon="💳", layout="centered")
+# === Solution : Chargement via le chemin relatif direct ===
+model_path = "./mlruns/332181450071015150/dde4b570426a44b7a6ccebc1b6d19073/artifacts/model"
+model = mlflow.sklearn.load_model(model_path)
 
+# === Design de la page ===
 st.markdown("""
     <h1 style='text-align: center; color: #4CAF50;'>💳 Application de Scoring Crédit</h1>
     <p style='text-align: center;'>Prédisez si un client remboursera ou non sa dette.</p>
@@ -88,7 +94,11 @@ with st.form("credit_form"):
 
     submitted = st.form_submit_button("🎯 Prédire")
 
-# === Prédiction ===
+# === Initialiser l'historique dans la session si non existant ===
+if "history" not in st.session_state:
+    st.session_state["history"] = []
+
+# === Traitement de la Prédiction ===
 if submitted:
     input_data = np.array([[LIMIT_BAL, SEX, EDUCATION, MARRIAGE, AGE,
                             PAY_0, PAY_2, PAY_3, PAY_4, PAY_5, PAY_6,
@@ -99,7 +109,7 @@ if submitted:
     prediction = model.predict(input_scaled)[0]
     proba = model.predict_proba(input_scaled)[0][1]  # Proba défaut
 
-    # === Interprétation du risque ===
+    # Interprétation du risque
     if proba >= 0.7:
         interpretation = "❌ Risque ÉLEVÉ de non-remboursement"
     elif proba >= 0.4:
@@ -107,7 +117,7 @@ if submitted:
     else:
         interpretation = "✅ Risque FAIBLE"
 
-    # === Jauge visuelle ===
+    # Jauge visuelle
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=proba * 100,
@@ -128,18 +138,17 @@ if submitted:
         }
     ))
 
-    st.success(
-        "✅ Le client **REMBOURSERA** son crédit." if prediction == 0 else "⚠️ Le client **NE REMBOURSERA PAS** son crédit.")
+    if prediction == 0:
+        st.success("✅ Le client **REMBOURSERA** son crédit.")
+        result_text = "REMBOURSERA"
+    else:
+        st.error("⚠️ Le client **NE REMBOURSERA PAS** son crédit.")
+        result_text = "NE REMBOURSERA PAS"
+
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(f"### {interpretation}")
 
-# === Initialiser l'historique dans la session si non existant ===
-if "history" not in st.session_state:
-    st.session_state["history"] = []
-
-# === Stocker la prédiction si formulaire soumis ===
-if submitted:
-    result_text = "REMBOURSERA" if prediction == 0 else "NE REMBOURSERA PAS"
+    # Stocker le résultat dans la session
     result = {
         "LIMIT_BAL": LIMIT_BAL,
         "SEX": "Homme" if SEX == 1 else "Femme",
@@ -149,8 +158,6 @@ if submitted:
         "PREDICTION": result_text
     }
     st.session_state["history"].append(result)
-
-    st.success(f"✅ Le client **{result_text.upper()}** son crédit.")
 
 # === Onglet Historique ===
 st.subheader("🕒 Historique des prédictions")
