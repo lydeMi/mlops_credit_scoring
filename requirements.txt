@@ -1,14 +1,13 @@
 pandas
 numpy
-scikit-learn
+scikit-learn==1.1.3
 matplotlib
 seaborn
 joblib
 imbalanced-learn
+mlflow==1.27.0
 ipykernel
 notebook
-plotly
-mlflow==1.27.0
-protobuf==4.25.3
 streamlit
+plotly
 setuptools<70.0.0
