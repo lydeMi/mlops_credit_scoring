@@ -1,8 +1,8 @@
 streamlit
 mlflow
-scikit-learn
 pandas
 numpy
 joblib
 protobuf==3.20.3
 plotly
+scikit-learn==1.1.3
