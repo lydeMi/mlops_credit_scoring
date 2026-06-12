@@ -10,3 +10,4 @@ ipykernel
 notebook
 streamlit
 plotly
+protobuf
